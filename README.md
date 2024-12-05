@@ -41,7 +41,7 @@ This repository provides a Bash script to install Amber and AmberTools with vari
    ```bash
    ./amber-installer.sh [OPTIONS]
    ```
-   ## Example
+   **Example**
    ```bash
    ./amber-installer.sh -gpu -path_install /opt/amber24
    ```
