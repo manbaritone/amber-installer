@@ -46,12 +46,12 @@ This repository provides a Bash script to install Amber and AmberTools with vari
    ./amber-installer.sh -gpu -path_install /opt/amber24
    ```
    **Options**
-   -cpu : Build Amber with serial CPU only.
-   -gpu : Build Amber with serial GPU support.
-   -mpi_cpu : Build Amber with MPI-enabled CPU support.
-   -mpi_gpu : Build Amber with MPI-enabled GPU support.
-   -path_install <path> : Specify the installation prefix (default: ~/apps/amber24).
-   -h : Display the help message.
+   - `-cpu`: Build Amber with serial CPU only.
+   - `-gpu`: Build Amber with serial GPU support.
+   - `-mpi_cpu`: Build Amber with MPI-enabled CPU support.
+   - `-mpi_gpu`: Build Amber with MPI-enabled GPU support.
+   - `-path_install <path>`: Specify the installation prefix (default: ~/apps/amber24).
+   - `h`: Display the help message.
    Note: Only one of the four build options (-cpu, -gpu, -mpi_cpu, or -mpi_gpu) can be specified at a time.
 
 ## License
