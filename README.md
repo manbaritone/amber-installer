@@ -24,7 +24,7 @@ This repository provides a Bash script to install Amber and AmberTools with vari
 
 - **Files:**  
   - `env.yml` (Conda environment specification)  
-  - `AmberTools24.tar.bz2` and `Amber24.tar.bz2` must be in the current directory.
+  - `AmberTools24.tar.bz2` and `Amber24.tar.bz2` must be in the current directory (amber-installer folder).
     
     **Note:** Please download AmberTools24.tar.bz2 and Amber24.tar.bz2 from https://ambermd.org/
 
