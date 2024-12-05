@@ -57,5 +57,18 @@ This repository provides a Bash script to install Amber and AmberTools with vari
    
      **Note:** Only one of the four build options (-cpu, -gpu, -mpi_cpu, or -mpi_gpu) can be specified at a time.
 
+## Running Amber and AmberTools
+
+Once you have successfully installed Amber24 and AmberTools24 using the installer script, you can run Amber programs by activating the conda environment and using the installed executables.
+
+**Activate the Conda Environment**
+
+After installation, an environment named `amber-installer` was created. To activate it, run:
+```bash
+source amber-installer/miniforge3/bin/activate
+conda activate amber-installer
+source path/to/amber_installation_folder/amber.sh
+```
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
