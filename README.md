@@ -52,7 +52,7 @@ This repository provides a Bash script to install Amber and AmberTools with vari
    - `-mpi_gpu`: Build Amber with MPI-enabled GPU support.
    - `-path_install <path>`: Specify the installation prefix (default: ~/apps/amber24).
    - `h`: Display the help message.
-   - Note: Only one of the four build options (-cpu, -gpu, -mpi_cpu, or -mpi_gpu) can be specified at a time.
+   Note: Only one of the four build options (-cpu, -gpu, -mpi_cpu, or -mpi_gpu) can be specified at a time.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
