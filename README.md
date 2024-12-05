@@ -32,11 +32,19 @@ This repository provides a Bash script to install Amber and AmberTools with vari
 
 ## Usage
 
-```bash
-./amber-installer.sh [OPTIONS]
-```
+1. **Clone this repository** (or download the script and required files):
+   ```bash
+   git clone https://github.com/yourusername/amber-installer.git
+   cd amber-installer
+2. Ensure env.yml is present and that AmberTools24.tar.bz2 and Amber24.tar.bz2 are in the same directory as the script.
+3. Run the script with the desired build option:
+   ```bash
+   ./amber-installer.sh [OPTIONS]
+   ```
+   ## Example
+   ```bash
+   ./amber-installer.sh -gpu -path_install /opt/amber24
+   ```
 
-## Example
-```bash
-./amber-installer.sh -gpu -path_install /opt/amber24
-```
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
