@@ -25,6 +25,8 @@ This repository provides a Bash script to install Amber and AmberTools with vari
 - **Files:**  
   - `env.yml` (Conda environment specification)  
   - `AmberTools24.tar.bz2` and `Amber24.tar.bz2` must be in the current directory.
+    
+    **Note:** Please download AmberTools24.tar.bz2 and Amber24.tar.bz2 from https://ambermd.org/
 
 - **Internet Connection:** Needed for downloading Miniforge3 if it's not already present.
 
@@ -34,7 +36,7 @@ This repository provides a Bash script to install Amber and AmberTools with vari
 
 1. **Clone this repository** (or download the script and required files):
    ```bash
-   git clone https://github.com/yourusername/amber-installer.git
+   git clone https://github.com/manbaritone/amber-installer.git
    cd amber-installer
 2. Ensure env.yml is present and that AmberTools24.tar.bz2 and Amber24.tar.bz2 are in the same directory as the script.
 3. Run the script with the desired build option:
