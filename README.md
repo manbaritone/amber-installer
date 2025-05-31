@@ -6,23 +6,23 @@ This repository provides a Bash script to install Amber and AmberTools for Linux
 
 ## Features
 
-- **Single-Flag Build Selection:** Choose one of the following build options:
-  - `-cpu`: Serial CPU version
-  - `-gpu`: Serial GPU version
-  - `-mpi_cpu`: Parallel (MPI) CPU version
-  - `-mpi_gpu`: Parallel (MPI) GPU version
+- 🔹 **Single-Flag Build Selection:** Allows you to specify exactly one of the following mutually exclusive build configurations:
+  - `-cpu`: Build the serial (non-MPI) CPU version.
+  - `-gpu`: Build the serial GPU version.
+  - `-mpi_cpu`: Build the parallel (MPI-enabled) CPU version.
+  - `-mpi_gpu`: Build the parallel GPU version (MPI + CUDA).
 
-- **Choose AmberTools or PMEMED:** Choose the installation type of AmberTools or PMEMD.
+- 🔹 **AMBER Package Selection:** Choose which components to build: AmberTools or PMEMD with minimal dependencies (no Python, Perl, or GUI).
 
-- **Custom Installation Prefix:** Set the installation path with `-path_install <path>` (defaults to `$HOME/amber25`).
+- 🔹 **Custom Installation Directory:** Set your preferred install location via `-path_install <path>` (default: `$HOME/amber25`).
 
-- **Automated Environment Setup:** Installs Miniforge3 if not already present. If `./miniforge3` directory exists, the script will use the existing Miniforge installation.
+- 🔹 **CPU Core Control:** Use `-nproc <n>` to specify the number of CPU threads for compilation (default: all cores).
 
-- **Set No. CPU Cores:** Set the number of CPU cores for the compilation process with `-nproc <n>` (default: all cores)
+- 🔹 **Automated Environment Setup:** Automatically installs Miniforge3 if not already present. If `./miniforge3` directory exists, the script will use the existing Miniforge installation.
   
-- **Conda Environment:** The script creates and activates a `conda` environment from `env.yml` (e.g., `amber-installer`) before building.
+- 🔹 **Conda Environment:** The script creates and activates a `conda` environment from `env.yml` (e.g., `amber-installer`) before building.
 
-- **Patch for QUICK CMakeLists:** Automatically applies a patch to avoid issues with `mpi.h` in QUICK.
+- 🔹 **Patch for QUICK CMakeLists:** Automatically applies a patch to avoid issues with `mpi.h` in QUICK.
 
 ## Requirements
 
