@@ -13,7 +13,7 @@ This repository provides a Bash script to install Amber and AmberTools for Linux
   - `-mpi_gpu`: Parallel (MPI) GPU version
 
 - **Choose AmberTools or PMEMED:** Choose the installation type of AmberTools25 or PMEMD.
-- 
+
 - **Custom Installation Prefix:** Set the installation path with `-path_install <path>` (defaults to `$HOME/amber25`).
 
 - **Automated Environment Setup:** Installs Miniforge3 if not already present. If `./miniforge3` directory exists, the script will use the existing Miniforge installation.
