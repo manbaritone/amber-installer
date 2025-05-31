@@ -49,10 +49,10 @@ This repository provides a Bash script to install Amber and AmberTools for Linux
    ```
    **Example for AMBER25**
    ```bash
-   bash amber25-installer.sh -ambertools25 -gpu -path_install /opt/amber25
+   bash amber25-installer.sh -ambertools -gpu -path_install /opt/amber25
    ```
    ```bash
-   bash amber25-installer.sh -pmemd24 -mpi_cpu -path_install /opt/amber25
+   bash amber25-installer.sh -pmemd -mpi_cpu -path_install /opt/amber25
    ```
    **Options**
    - `-cpu`: Build with serial CPU version.
