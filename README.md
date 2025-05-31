@@ -12,7 +12,7 @@ This repository provides a Bash script to install Amber and AmberTools for Linux
   - `-mpi_cpu`: Parallel (MPI) CPU version
   - `-mpi_gpu`: Parallel (MPI) GPU version
 
-- **Choose AmberTools or PMEMED:** Choose the installation type of AmberTools25 or PMEMD.
+- **Choose AmberTools or PMEMED:** Choose the installation type of AmberTools or PMEMD.
 
 - **Custom Installation Prefix:** Set the installation path with `-path_install <path>` (defaults to `$HOME/amber25`).
 
@@ -42,17 +42,17 @@ This repository provides a Bash script to install Amber and AmberTools for Linux
    ```bash
    git clone https://github.com/manbaritone/amber-installer.git
    cd amber-installer
-2. Ensure env.yml is present and that AmberTools24.tar.bz2 and Amber24.tar.bz2 are in the same directory as the script.
+2. Ensure env.yml is present and that ambertools25.tar.bz2 and/or pmemd24.tar.bz2 are in the same directory as the script.
 3. Run the script with the desired build option:
    ```bash
    bash amber25-installer.sh [OPTIONS]
    ```
    **Example for AMBER25**
    ```bash
-   bash amber25-installer.sh -ambertools25 -gpu -path_install /opt/amber24
+   bash amber25-installer.sh -ambertools25 -gpu -path_install /opt/amber25
    ```
    ```bash
-   bash amber25-installer.sh -pmemd24 -mpi_cpu -path_install /opt/amber24
+   bash amber25-installer.sh -pmemd24 -mpi_cpu -path_install /opt/amber25
    ```
    **Options**
    - `-cpu`: Build with serial CPU version.
