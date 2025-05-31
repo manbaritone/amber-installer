@@ -43,8 +43,8 @@ fi
 BUILD_MPI=FALSE
 BUILD_CUDA=FALSE
 INSTALL_PREFIX="${HOME}/amber25"
-BUILD_AMBERTOOLS25=false
-BUILD_PMEMD24=false
+BUILD_AMBERTOOLS=false
+BUILD_PMEMD=false
 NPROC=$(nproc)
 
 usage() {
@@ -55,14 +55,15 @@ usage() {
     echo "  -gpu             Build with serial GPU version"
     echo "  -mpi_cpu         Build with parallel (MPI) CPU version"
     echo "  -mpi_gpu         Build with parallel (MPI) GPU version"
-    echo "  -ambertools25    Build AmberTools25"
-    echo "  -pmemd24         Build PMEMD24 only"
-    echo "  -path_install    Installation prefix (default: \$HOME/apps/amber25)"
+    echo "  -ambertools      Build AmberTools25"
+    echo "  -pmemd           Build PMEMD24"
+    echo "  -path_install    Installation prefix (default: \$HOME/amber25)"
     echo "  -nproc <n>       Set number of CPU cores for compilation (default: all cores)"
     echo "  -h               Show this help message"
     exit 1
 }
 
+# Parse command-line arguments
 CPU_FLAG_SET=0
 GPU_FLAG_SET=0
 MPI_CPU_FLAG_SET=0
@@ -75,11 +76,11 @@ while [[ $# -gt 0 ]]; do
         -gpu) GPU_FLAG_SET=1; shift;;
         -mpi_cpu) MPI_CPU_FLAG_SET=1; shift;;
         -mpi_gpu) MPI_GPU_FLAG_SET=1; shift;;
-        -ambertools25) BUILD_AMBERTOOLS25=true; shift;;
-        -pmemd24) BUILD_PMEMD24=true; shift;;
+        -ambertools) BUILD_AMBERTOOLS=true; shift;;
+        -pmemd) BUILD_PMEMD=true; shift;;
         -path_install)
             if [[ $# -lt 2 ]]; then
-                echo -e "${RED}Error: Missing argument for -path_install.${NC}"
+                echo -e "${RED}Error: -path_install requires a path for installation.${NC}"
                 usage
             fi
             INSTALL_PREFIX="$2"
@@ -102,8 +103,8 @@ if [[ $TOTAL_FLAGS -ne 1 ]]; then
     usage
 fi
 
-if [[ "$BUILD_AMBERTOOLS25" = false && "$BUILD_PMEMD24" = false ]]; then
-    echo -e "${RED}Error: Choose at least one of -ambertools25 or -pmemd24${NC}"
+if [[ "$BUILD_AMBERTOOLS" = false && "$BUILD_PMEMD" = false ]]; then
+    echo -e "${RED}Error: Choose at least one of -ambertools or -pmemd${NC}"
     usage
 fi
 
@@ -119,22 +120,29 @@ elif [[ $MPI_GPU_FLAG_SET -eq 1 ]]; then
 fi
 
 # Setup conda environment
+# Check if Miniforge3 is already installed
 if [ -d "./miniforge3" ]; then
     echo -e "${BLUE}Activating existing conda environment...${NC}"
     source ./miniforge3/bin/activate
-    set +u; conda activate amber-installer
+    set +u
+    conda activate amber-installer
 else
-    INSTALLER="Miniforge3-$(uname)-$(uname -m).sh"
-    [ -f "$INSTALLER" ] || curl -LO "https://github.com/conda-forge/miniforge/releases/latest/download/$INSTALLER"
-    bash "$INSTALLER" -b -p ./miniforge3
+    # Download and install Miniforge3 and amber-installer environment if not present
+    MINIFORGE_INSTALLER="Miniforge3-$(uname)-$(uname -m).sh"
+    [ -f "$MINIFORGE_INSTALLER" ] || curl -LO "https://github.com/conda-forge/miniforge/releases/latest/download/$MINIFORGE_INSTALLER"
+    bash "$MINIFORGE_INSTALLER" -b -p ./miniforge3
     source ./miniforge3/bin/activate
     echo -e "${BLUE}Creating conda environment 'amber-installer'...${NC}"
+    
+    # Install amber-installer environment
     conda env create -f env.yml
-    set +u; conda activate amber-installer
+    set +u
+    conda activate amber-installer
 fi
 
 # AmberTools25 installation
-if [ "$BUILD_AMBERTOOLS25" = true ]; then
+# Check if the ambertools tar files exist
+if [ "$BUILD_AMBERTOOLS" = true ]; then
     if [ ! -f "ambertools25.tar.bz2" ]; then
         echo -e "${RED}Error: ambertools25.tar.bz2 not found in the current directory.${NC}"
         echo -e "${YELLOW}Please download ambertools25.tar.bz2 file from https://ambermd.org/GetAmber.php${NC}"
@@ -142,10 +150,31 @@ if [ "$BUILD_AMBERTOOLS25" = true ]; then
     fi
     echo -e "${BLUE}Extracting AmberTools25...${NC}"
     [ -d "ambertools25_src" ] || tar xvjf ambertools25.tar.bz2
+    
+    # Update Amber
     cd ambertools25_src
     ./update_amber --update
+    
+    # Fix QUICK CMakeLists due to mpi.h issue
+    # Credit: https://github.com/merzlab/QUICK/issues/343
+    quick_cmake_path="AmberTools/src/quick/CMakeLists.txt"
+    sed -i '/set(CMAKE_C_FLAGS "")/s/^/# /' "$quick_cmake_path"
+    sed -i '/set(CMAKE_CXX_FLAGS "")/s/^/# /' "$quick_cmake_path"
+    sed -i '/set(CMAKE_Fortran_FLAGS "")/s/^/# /' "$quick_cmake_path"
+    
+    # Create build directory if it does not exist
     mkdir -p build && cd build
-    echo -e "${BLUE}Configuring AmberTools25 with CMake...${NC}"
+    
+    # Build AmberTools with the chosen configuration
+    echo -e "${BLUE}Configuring AmberTools25 with MPI=${BUILD_MPI}, CUDA=${BUILD_CUDA}, INSTALL_PREFIX=${INSTALL_PREFIX}...${NC}"
+    
+    # If CMakeFiles exist, clean up before re-configuring
+    if [ -d "CMakeFiles" ]; then
+        echo "CMakeFiles folder found. Running 'make clean'..."
+        make clean
+    fi
+    
+    # Function to run cmake and make
     cmake .. \
         -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" \
         -DCOMPILER=GNU \
@@ -160,7 +189,8 @@ if [ "$BUILD_AMBERTOOLS25" = true ]; then
 fi
 
 # PMEMD24-only installation
-if [ "$BUILD_PMEMD24" = true ]; then
+# Check if the pmemd tar files exist
+if [ "$BUILD_PMEMD" = true ]; then
     if [ ! -f "pmemd24.tar.bz2" ]; then
         echo -e "${RED}Error: pmemd24.tar.bz2 not found in the current directory.${NC}"
         echo -e "${YELLOW}Please download pmemd24.tar.bz2 file from https://ambermd.org/GetAmber.php${NC}"
@@ -168,10 +198,23 @@ if [ "$BUILD_PMEMD24" = true ]; then
     fi
     echo -e "${BLUE}Extracting PMEMD24...${NC}"
     [ -d "pmemd24_src" ] || tar xvjf pmemd24.tar.bz2
+    
+    # Update Amber
     cd pmemd24_src
     ./update_amber --update
+    
+    # Create build directory if it does not exist
     mkdir -p build && cd build
-    echo -e "${BLUE}Configuring PMEMD24 with CMake...${NC}"
+    
+    echo -e "${BLUE}Configuring PMEMD24 with MPI=${BUILD_MPI}, CUDA=${BUILD_CUDA}, INSTALL_PREFIX=${INSTALL_PREFIX}...${NC}"
+    
+    # If CMakeFiles exist, clean up before re-configuring
+    if [ -d "CMakeFiles" ]; then
+        echo "CMakeFiles folder found. Running 'make clean'..."
+        make clean
+    fi
+    
+    # Function to run cmake and make
     cmake .. \
         -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" \
         -DCOMPILER=GNU \
@@ -191,4 +234,3 @@ if [ "$BUILD_PMEMD24" = true ]; then
 fi
 
 echo -e "${GREEN}Installation completed successfully at ${INSTALL_PREFIX}.${NC}"
-
