@@ -59,8 +59,8 @@ This repository provides a Bash script to install Amber and AmberTools for Linux
    - `-gpu`: Build with serial GPU version.
    - `-mpi_cpu`: Build with parallel (MPI) CPU version.
    - `-mpi_gpu`: Build with parallel (MPI) GPU version.
-   - `-ambertools25`: Build AmberTools25.
-   - `-pmemd24`: Build PMEMD24.
+   - `-ambertools`: Build AmberTools25.
+   - `-pmemd`: Build PMEMD24.
    - `-path_install <path>`: Specify the installation prefix (default: ~/amber25).
    - `-nproc <n>`: Specify number of CPU cores for compilation (default: all cores).
    - `-h`: Display the help message.
